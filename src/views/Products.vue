@@ -15,12 +15,7 @@
         <h4>Basic Crud in firebase and vue</h4>
         <div class="product-test">
             <div class="form-group">
-                <input
-                    type="text"
-                    placeholder="Product Name"
-                    v-model="product.name"
-                    class="form-control"
-                />
+                <input type="text" placeholder="Product Name" v-model="product.name" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="text" placeholder="Price" v-model="product.price" class="form-control" />
@@ -41,17 +36,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in products" :key="item">
-                            <td>{{item.data().name}}</td>
-                            <td>{{item.data().price}}</td>
+                        <tr v-for="product in products" :key="product">
+                            <td>{{product.data().name}}</td>
+                            <td>{{product.data().price}}</td>
                             <td>
-                                <b-button variant="success" @click="update">Update</b-button>
-                                <b-button variant="danger" @click="deleteProduct(item.id)">Delete</b-button>
+                                <b-button variant="success" @click="editProduct(product)">Update</b-button>
+                                <b-button variant="danger" @click="deleteProduct(product.id)">Delete</b-button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div>
+            <b-modal id="modal-center" centered title="J&M Update Product" hide-footer>
+                <div class="form-group">
+                <input type="text" placeholder="Product Name" v-model="product.name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Price" v-model="product.price" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <b-button variant="success" @click="editProduct">Update</b-button>
+                </div>
+            </b-modal>
         </div>
     </div>
 </template>
@@ -71,20 +79,23 @@ export default {
         };
     },
     methods: {
+        editProduct(product) {
+            this.$bvModal.show('modal-center')
+            this.product = product.data()
+        },
         deleteProduct(doc) {
             if (confirm("Sure you want to delete")) {
                 db.collection("products")
                     .doc("doc")
                     .delete()
                     .then(() => {
-                        this.readData()
+                        this.readData();
                         // alert("Product successfully deleted!");
                     })
                     .catch(function(error) {
                         alert("Error removing document: ", error);
                     });
             } else {
-
             }
         },
         readData() {
