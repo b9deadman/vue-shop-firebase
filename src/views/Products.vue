@@ -31,26 +31,33 @@
 
             <hr />
             <h3>Product List</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in products" :key="item.id">
-                        <td>{{item.name}}</td>
-                        <td>{{item.price}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Modify</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in products" :key="item">
+                            <td>{{item.data().name}}</td>
+                            <td>{{item.data().price}}</td>
+                            <td>
+                                <b-button variant="success" @click="update">Update</b-button>
+                                <b-button variant="danger" @click="deleteProduct(item.id)">Delete</b-button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-import { db } from "../firebase.js"
+import { db } from "../firebase.js";
 
 export default {
     name: "Products",
@@ -64,12 +71,28 @@ export default {
         };
     },
     methods: {
+        deleteProduct(doc) {
+            if (confirm("Sure you want to delete")) {
+                db.collection("products")
+                    .doc("doc")
+                    .delete()
+                    .then(() => {
+                        this.readData()
+                        // alert("Product successfully deleted!");
+                    })
+                    .catch(function(error) {
+                        alert("Error removing document: ", error);
+                    });
+            } else {
+
+            }
+        },
         readData() {
             db.collection("products")
                 .get()
                 .then(querySnapshot => {
                     querySnapshot.forEach(doc => {
-                        this.products.push(doc.data())
+                        this.products.push(doc);
                         // console.log(`${doc.id} => ${doc.data()}`)
                     });
                 });
@@ -77,12 +100,13 @@ export default {
         saveData() {
             db.collection("products")
                 .add(this.product)
-                .then(()=> {
-                    this.readData()
-                    alert("product add success ")
+                .then(() => {
+                    Object.assign(this.$data, this.$options.data.apply(this));
+                    this.readData();
+                    alert("product add success ");
                 })
                 .catch(error => {
-                    alert("Error adding document: ", error)
+                    alert("Error adding document: ", error);
                 });
         },
         reset() {
@@ -90,7 +114,7 @@ export default {
         }
     },
     created() {
-        this.readData()
+        this.readData();
     }
 };
 </script>
