@@ -76,10 +76,10 @@
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/admin/logout">
+                                <a href="#" @click="logout">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span class="menu-text">Logout</span>
-                                </router-link>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -100,16 +100,24 @@
 
 <script>
 // @ is an alias to /src
-import Hero from "@/components/Hero.vue";
+// import Hero from "@/components/Hero.vue";
+import {fb} from '../firebase.js'
 
 export default {
     name: "home",
     components: {
-        Hero
+        // Hero
     },
     methods: {
         closeMenu() {
             $(".page-wrapper").toggleClass("toggled");
+        },
+        logout(){
+            fb.auth().signOut().then(() => {
+                this.$router.replace('/')
+            }).catch((error) => {
+                console.log(err)
+            })
         }
     }
 };

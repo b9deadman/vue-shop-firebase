@@ -83,8 +83,39 @@
     </div>
 </template>
 <script>
+import {fb} from "../firebase.js";
+
 export default {
-    name: "Login"
+    name: "Login",
+    data() {
+        return {
+            name: null,
+            email: null,
+            password: null
+        };
+    },
+    methods: {
+        register() {
+            fb.auth()
+                .createUserWithEmailAndPassword(this.email, this.password)
+                .then(() => {
+                    this.$router.replace('admin')
+                })
+                .catch(function(error) {
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    // [START_EXCLUDE]
+                    if (errorCode == "auth/weak-password") {
+                        alert("The password is too weak.");
+                    } else {
+                        alert(errorMessage);
+                    }
+                    console.log(error);
+                    // [END_EXCLUDE]
+                });
+        }
+    }
 };
 </script>
 <style lang="scss" scoped>
