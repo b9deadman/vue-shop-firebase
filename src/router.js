@@ -20,6 +20,11 @@ const router = new Router({
             component: Home
         },
         {
+            path: "/products",
+            name: "products",
+            component: Products
+        },
+        {
             path: "/about",
             name: "about",
             // route level code-splitting

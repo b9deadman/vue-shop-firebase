@@ -1,4 +1,6 @@
 import firebase from 'firebase'
+require("firebase/firestore")
+
 
 // Your web app's Firebase configuration
 var config = {
@@ -10,7 +12,10 @@ var config = {
     messagingSenderId: "975698087098",
     appId: "1:975698087098:web:485509ad1f06a41241c683",
     measurementId: "G-0PLECRWDRR"
-  };
-  // Initialize Firebase
-  export const fb = firebase.initializeApp(config);
-  export const fba = firebase.analytics();
+};
+// Initialize Firebase
+const fb = firebase.initializeApp(config);
+const fba = firebase.analytics();
+const db = firebase.firestore();
+
+export {fb, db, fba}
