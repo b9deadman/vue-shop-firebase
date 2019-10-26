@@ -22,20 +22,16 @@
 
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item-dropdown right>
-                        <!-- Using 'button-content' slot -->
-                        <template v-slot:button-content>
-                            <strong>User</strong>
-                        </template>
-                        <b-dropdown-item href="#">Profile</b-dropdown-item>
-                        <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-                    </b-nav-item-dropdown>
+                    <b-nav-item>
+                        <b-button v-b-modal.modal-center>Lets Start</b-button>
+                    </b-nav-item>
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
     </div>
 </template>
 <script>
+import Login from "./Login.vue";
 export default {
     name: "Navbar"
 };
