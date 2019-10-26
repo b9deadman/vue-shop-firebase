@@ -65,7 +65,7 @@ router.beforeEach((to, from, next) => {
     const currentUser = fb.auth().currentUser
 
     if (requiresAuth && !currentUser){
-        next('/about')
+        next('/')
     } else if (requiresAuth && currentUser){
         next()
     } else {

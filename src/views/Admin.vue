@@ -24,8 +24,7 @@
                         </div>
                         <div class="user-info">
                             <span class="user-name">
-                                Jhon
-                                <strong>Smith</strong>
+                                <strong>Asad</strong>
                             </span>
                             <span class="user-role">Administrator</span>
                             <span class="user-status">
@@ -116,7 +115,7 @@ export default {
             fb.auth().signOut().then(() => {
                 this.$router.replace('/')
             }).catch((error) => {
-                console.log(err)
+                console.log(error)
             })
         }
     }

@@ -17,7 +17,7 @@ Vue.component('Navbar', require('./components/Navbar.vue').default)
 
 let app = "";
 
-fb.auth().onAuthStateChanged(function (user) {
+fb.auth().onAuthStateChanged(function () {
 	if (!app) {
 		new Vue({
 			router,

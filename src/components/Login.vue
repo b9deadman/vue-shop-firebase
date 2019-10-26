@@ -83,7 +83,7 @@
     </div>
 </template>
 <script>
-import {fb} from "../firebase.js";
+import { fb } from "../firebase.js"
 
 export default {
     name: "Login",
@@ -99,20 +99,41 @@ export default {
             fb.auth()
                 .createUserWithEmailAndPassword(this.email, this.password)
                 .then(() => {
-                    this.$router.replace('admin')
+                    this.$router.replace("admin")
                 })
                 .catch(function(error) {
                     // Handle Errors here.
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
+                    var errorCode = error.code
                     // [START_EXCLUDE]
                     if (errorCode == "auth/weak-password") {
-                        alert("The password is too weak.");
+                        alert("The password is too weak.")
+                    } else if (errorCode == "auth/email-already-in-use") {
+                        alert("Email already registered")
                     } else {
-                        alert(errorMessage);
+                        alert(errorCode)
                     }
-                    console.log(error);
+                    console.log(error)
                     // [END_EXCLUDE]
+                });
+        },
+        login() {
+            fb.auth()
+                .signInWithEmailAndPassword(this.email, this.password)
+                .then(() => {
+                    this.$router.replace("/admin")
+                })
+                .catch(function(error) {
+                    // Handle Errors here.
+                    var errorCode = error.code
+                    if (errorCode === "auth/wrong-password") {
+                        alert("Wrong password please try again")
+                    } else if (errorCode == "auth/user-disabled") {
+                        alert("Please contact in office for assistance")
+                    } else if (errorCode == "auth/user-not-found") {
+                        alert("User not found please register")
+                    } else if (errorCode == "auth/wrong-password") {
+                        alert("Wrong password please try again")
+                    }
                 });
         }
     }
