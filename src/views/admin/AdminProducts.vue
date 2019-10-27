@@ -93,9 +93,10 @@
                             <div class="form-group">
                                 <input
                                     type="text"
-                                    placeholder="Product tag"
-                                    v-model="product.tag"
+                                    placeholder="Use , for seperate tag"
+                                    v-model="tag"
                                     class="form-control"
+                                    @keyup.188="addTag"
                                 />
                             </div>
                             <div>
@@ -140,10 +141,11 @@ export default {
                 name: null,
                 description: null,
                 price: null,
-                tag: null,
+                tags: [],
                 image: null
             },
-            modal: null
+            modal: null,
+            tag:null,
         };
     },
     firestore() {
@@ -153,6 +155,10 @@ export default {
         };
     },
     methods: {
+        addTag(){
+            this.product.tags.push(this.tag)
+            this.tag = ""
+        },
         uploadImage() {},
         addNew() {
             this.product.name = null;
