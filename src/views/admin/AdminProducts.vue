@@ -73,13 +73,14 @@
                                 />
                             </div>
                             <div class="form-group">
-                                <b-form-textarea
+                                <vue-editor v-model="product.description"></vue-editor>
+                                <!-- <b-form-textarea
                                     id="textarea"
                                     v-model="product.description"
                                     placeholder="Product Description"
                                     rows="3"
                                     max-rows="6"
-                                ></b-form-textarea>
+                                ></b-form-textarea> -->
                             </div>
                             <div class="form-group">
                                 <input
@@ -125,9 +126,13 @@
 
 <script>
 import { db } from "@/firebase.js";
+import { VueEditor } from "vue2-editor"
 
 export default {
     name: "AdminProducts",
+    components:{
+        VueEditor
+    },
     data() {
         return {
             products: [],
