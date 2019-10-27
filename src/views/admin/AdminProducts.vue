@@ -89,30 +89,40 @@ export default {
             products: [],
             product: {
                 name: null,
-                price: null,
+                price: null
             },
-            activeItem:null,
+            activeItem: null
         };
     },
     methods: {
+        watcher() {
+            db.collection("products")
+                .onSnapshot((querySnapshot) => {
+                    this.products = [];
+                    querySnapshot.forEach((doc) => {
+                        this.products.push(doc)
+                    })
+                });
+        },
         updateProduct() {
-            db.collection("products").doc(this.activeItem)
+            db.collection("products")
+                .doc(this.activeItem)
                 .update(this.product)
                 .then(() => {
-                    this.$bvModal.hide("modal-center")
-                    this.readData()
-                    alert("update success")
+                    this.$bvModal.hide("modal-center");
+                    this.watcher()
+                    alert("update success");
                 })
-                .catch((error) => {
+                .catch(error => {
                     // The document probably doesn't exist.
-                    console.log("error updating document: ", error)
+                    console.log("error updating document: ", error);
                     // alert("Error updating document: ", error)
                 });
         },
         editProduct(item) {
-            this.$bvModal.show("modal-center")
-            this.product = item.data()
-            this.activeItem = item.id
+            this.$bvModal.show("modal-center");
+            this.product = item.data();
+            this.activeItem = item.id;
         },
         deleteProduct(doc) {
             if (confirm("Sure you want to delete")) {
@@ -120,7 +130,7 @@ export default {
                     .doc("doc")
                     .delete()
                     .then(() => {
-                        this.readData();
+                        this.watcher()
                         // alert("Product successfully deleted!");
                     })
                     .catch(function(error) {
@@ -143,8 +153,8 @@ export default {
             db.collection("products")
                 .add(this.product)
                 .then(() => {
-                    Object.assign(this.$data, this.$options.data.apply(this));
-                    this.readData();
+                    // Object.assign(this.$data, this.$options.data.apply(this));
+                    this.watcher()
                     alert("product add success ");
                 })
                 .catch(error => {
