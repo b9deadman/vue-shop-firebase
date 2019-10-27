@@ -15,7 +15,12 @@
         <h4>Basic Crud in firebase and vue</h4>
         <div class="product-test">
             <div class="form-group">
-                <input type="text" placeholder="Product Name" v-model="product.name" class="form-control" />
+                <input
+                    type="text"
+                    placeholder="Product Name"
+                    v-model="product.name"
+                    class="form-control"
+                />
             </div>
             <div class="form-group">
                 <input type="text" placeholder="Price" v-model="product.price" class="form-control" />
@@ -36,12 +41,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="product in products" :key="product">
-                            <td>{{product.data().name}}</td>
-                            <td>{{product.data().price}}</td>
+                        <tr v-for="item in products">
+                            <td>{{item.data().name}}</td>
+                            <td>{{item.data().price}}</td>
                             <td>
-                                <b-button variant="success" @click="editProduct(product)">Update</b-button>
-                                <b-button variant="danger" @click="deleteProduct(product.id)">Delete</b-button>
+                                <b-button variant="success" @click="editProduct(item)">Update</b-button>
+                                <b-button variant="danger" @click="deleteProduct(item.id)">Delete</b-button>
                             </td>
                         </tr>
                     </tbody>
@@ -51,13 +56,23 @@
         <div>
             <b-modal id="modal-center" centered title="J&M Update Product" hide-footer>
                 <div class="form-group">
-                <input type="text" placeholder="Product Name" v-model="product.name" class="form-control" />
+                    <input
+                        type="text"
+                        placeholder="Product Name"
+                        v-model="product.name"
+                        class="form-control"
+                    />
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Price" v-model="product.price" class="form-control" />
+                    <input
+                        type="text"
+                        placeholder="Price"
+                        v-model="product.price"
+                        class="form-control"
+                    />
                 </div>
                 <div class="form-group">
-                    <b-button variant="success" @click="updateProduct()">Save</b-button>
+                    <b-button variant="success" @click="updateProduct">Save</b-button>
                 </div>
             </b-modal>
         </div>
@@ -66,7 +81,6 @@
 
 <script>
 import { db } from "@/firebase.js";
-import {fb} from "@/firebase.js"
 
 export default {
     name: "AdminProducts",
@@ -75,17 +89,30 @@ export default {
             products: [],
             product: {
                 name: null,
-                price: null
-            }
+                price: null,
+            },
+            activeItem:null,
         };
     },
     methods: {
-        updateProduct(){
-
+        updateProduct() {
+            db.collection("products").doc(this.activeItem)
+                .update(this.product)
+                .then(() => {
+                    this.$bvModal.hide("modal-center")
+                    this.readData()
+                    alert("update success")
+                })
+                .catch((error) => {
+                    // The document probably doesn't exist.
+                    console.log("error updating document: ", error)
+                    // alert("Error updating document: ", error)
+                });
         },
-        editProduct(product) {
-            this.$bvModal.show('modal-center')
-            this.product = product.data()
+        editProduct(item) {
+            this.$bvModal.show("modal-center")
+            this.product = item.data()
+            this.activeItem = item.id
         },
         deleteProduct(doc) {
             if (confirm("Sure you want to delete")) {
