@@ -27,6 +27,38 @@
                 </div>
             </b-modal>
         </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Tag</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in products">
+                        <td>
+                            <a href="#" @click="editProduct">
+                                <i class="fas fa-edit mr-1"></i>
+                            </a>
+                            | {{item.name}}
+                        </td>
+                        <td>{{item.description}}</td>
+                        <td>{{item.price}}</td>
+                        <td>{{item.tag}}</td>
+                        <td>
+                            {{item.image}} |
+                            <a href="#" @click="deleteProduct(item)">
+                                <i class="fas fa-trash-alt ml-1"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div>
             <b-modal id="modal-addnew" centered title="J&M Add Product" hide-footer>
                 <b-container fluid>
@@ -116,17 +148,37 @@ export default {
         watcher() {},
         updateProduct() {},
         editProduct() {},
-        deleteProduct() {},
+        deleteProduct(item) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then(result => {
+                if (result.value) {
+                    this.$firestore.products.doc(item[".key"]).delete();
+                    Toast.fire({
+                        type: "success",
+                        title: "Delete success"
+                    });
+                }
+            });
+        },
         readData() {},
         addProduct() {
             this.$firestore.products.add(this.product);
             this.$bvModal.hide("modal-addnew");
-            alert('add product success')
+            Toast.fire({
+                type: "success",
+                title: "Add new product success"
+            });
         }
     },
     created() {}
 };
 </script>
 <style lang="scss" scoped>
-
 </style>

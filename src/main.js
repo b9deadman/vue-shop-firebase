@@ -9,12 +9,23 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './assets/app.scss'
 import {fb} from "./firebase.js"
 import VueFirestore from 'vue-firestore'
+import Swal from 'sweetalert2'
+
 
 Vue.use(VueFirestore)
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false;
 window.$ = window.jQuery = jQuery
+window.Swal = Swal
 
+const Toast = Swal.mixin({
+	toast: true,
+	position: 'top-end',
+	showConfirmButton: false,
+	timer: 3000
+  })
+
+window.Toast = Toast
 Vue.component('Navbar', require('./components/Navbar.vue').default)
 
 let app = "";
