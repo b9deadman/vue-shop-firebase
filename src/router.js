@@ -1,11 +1,12 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
-import Admin from "./views/Admin.vue";
-import Overview from "./views/Overview.vue"
-import Orders from "./views/Orders.vue"
+import Admin from "./views/admin/Admin.vue";
+import Overview from "./views/admin/Overview.vue"
+import Orders from "./views/admin/Orders.vue"
 import Products from "./views/Products.vue"
-import Logout from "./views/Logout.vue"
+import AdminProducts from "./views/admin/AdminProducts.vue"
+import Logout from "./views/admin/Logout.vue"
 import {fb} from "./firebase.js"
 
 Vue.use(Router);
@@ -46,9 +47,9 @@ const router = new Router({
                     component: Overview
                 },
                 {
-                    path: "products",
-                    name: "products",
-                    component: Products
+                    path: "adminproducts",
+                    name: "adminproducts",
+                    component: AdminProducts
                 },
                 {
                     path: "orders",

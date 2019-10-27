@@ -63,7 +63,7 @@
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/admin/products">
+                                <router-link to="/admin/adminproducts">
                                     <i class="fas fa-shopping-basket"></i>
                                     <span class="menu-text">Products</span>
                                 </router-link>
@@ -100,7 +100,7 @@
 <script>
 // @ is an alias to /src
 // import Hero from "@/components/Hero.vue";
-import {fb} from '../firebase.js'
+import {fb} from "@/firebase.js"
 
 export default {
     name: "home",
