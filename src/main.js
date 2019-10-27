@@ -8,7 +8,9 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './assets/app.scss'
 import {fb} from "./firebase.js"
+import VueFirestore from 'vue-firestore'
 
+Vue.use(VueFirestore)
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false;
 window.$ = window.jQuery = jQuery
