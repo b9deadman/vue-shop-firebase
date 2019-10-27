@@ -41,7 +41,7 @@
                 <tbody>
                     <tr v-for="item in products">
                         <td>
-                            <a href="#" @click="editProduct">
+                            <a href="#" @click="editProduct(item)">
                                 <i class="fas fa-edit mr-1"></i>
                             </a>
                             | {{item.name}}
@@ -106,7 +106,14 @@
                                     variant="success"
                                     @click="addProduct"
                                     class="float-right"
+                                    v-if="modal == 'new'"
                                 >Save</b-button>
+                                <b-button
+                                    variant="success"
+                                    @click="updateProduct"
+                                    class="float-right"
+                                    v-if="modal == 'edit'"
+                                >Update</b-button>
                             </div>
                         </b-col>
                     </b-row>
@@ -131,7 +138,7 @@ export default {
                 tag: null,
                 image: null
             },
-            activeItem: null
+            modal: null
         };
     },
     firestore() {
@@ -143,11 +150,28 @@ export default {
     methods: {
         uploadImage() {},
         addNew() {
+            this.product.name = null;
+            this.product.description = null;
+            this.product.price = null;
+            this.product.tag = null;
+            this.product.image = null;
+            this.modal = "new";
             this.$bvModal.show("modal-addnew");
         },
         watcher() {},
-        updateProduct() {},
-        editProduct() {},
+        updateProduct() {
+            this.$bvModal.hide("modal-addnew");
+            this.$firestore.products.doc(this.product.id).update(this.product)
+            Toast.fire({
+                type: "success",
+                title: "Update success"
+            });
+        },
+        editProduct(item) {
+            this.modal = "edit";
+            this.$bvModal.show("modal-addnew");
+            this.product = item;
+        },
         deleteProduct(item) {
             Swal.fire({
                 title: "Are you sure?",
@@ -159,7 +183,7 @@ export default {
                 confirmButtonText: "Yes, delete it!"
             }).then(result => {
                 if (result.value) {
-                    this.$firestore.products.doc(item[".key"]).delete();
+                    this.$firestore.products.doc(item.id).delete();
                     Toast.fire({
                         type: "success",
                         title: "Delete success"
