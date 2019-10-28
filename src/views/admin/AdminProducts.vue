@@ -34,8 +34,6 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Price</th>
-                        <th>Tag</th>
-                        <th>Image</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,10 +45,8 @@
                             | {{item.name}}
                         </td>
                         <td>{{item.description}}</td>
-                        <td>{{item.price}}</td>
-                        <td>{{item.tag}}</td>
                         <td>
-                            {{item.image}} |
+                            {{item.price}} | 
                             <a href="#" @click="deleteProduct(item)">
                                 <i class="fas fa-trash-alt ml-1"></i>
                             </a>
@@ -98,10 +94,20 @@
                                     class="form-control"
                                     @keyup.188="addTag"
                                 />
+                                <div class="d-flex">
+                                    <p v-for="tag in product.tags">
+                                        <span class="p-1">{{tag}}</span>
+                                    </p>
+                                </div>
                             </div>
                             <div>
                                 <p>Product Image</p>
                                 <b-form-file multiple @change="uploadImage" />
+                            </div>
+                            <div class="form d-flex">
+                                <div class="p-1" v-for="image in product.images">
+                                    <img :src="image" width="80px" height="80px" />
+                                </div>
                             </div>
                             <div class="form-group float-right mt-4">
                                 <b-button
@@ -142,7 +148,7 @@ export default {
                 description: null,
                 price: null,
                 tags: [],
-                image: null
+                images: []
             },
             modal: null,
             tag: null
@@ -160,43 +166,44 @@ export default {
             this.tag = "";
         },
         uploadImage(e) {
-            let file = e.target.files[0];
-            var storageRef = fb.storage().ref("productImages/" + file.name);
-            let uploadTask = storageRef.put(file);
+            if (e.target.files[0]) {
+                let file = e.target.files[0];
+                var storageRef = fb.storage().ref("productImages/" + file.name);
+                let uploadTask = storageRef.put(file);
 
-            uploadTask.on(
-                "state_changed",
-                (snapshot) => {
-                    // Observe state change events such as progress, pause, and resume
-                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                    var progress =
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log("Upload is " + progress + "% done");
-                    switch (snapshot.state) {
-                        
+                uploadTask.on(
+                    "state_changed",
+                    snapshot => {
+                        // Observe state change events such as progress, pause, and resume
+                        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                        var progress =
+                            (snapshot.bytesTransferred / snapshot.totalBytes) *
+                            100;
+                        console.log("Upload is " + progress + "% done");
+                        switch (snapshot.state) {
+                        }
+                    },
+                    error => {
+                        // Handle unsuccessful uploads
+                    },
+                    () => {
+                        // Handle successful uploads on complete
+                        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                        uploadTask.snapshot.ref
+                            .getDownloadURL()
+                            .then(downloadURL => {
+                                this.product.images.push(downloadURL);
+                            });
                     }
-                },
-                (error) => {
-                    // Handle unsuccessful uploads
-                },
-                () => {
-                    // Handle successful uploads on complete
-                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-                    uploadTask.snapshot.ref
-                        .getDownloadURL()
-                        .then((downloadURL) => {
-                            // console.log("File available at", downloadURL);
-                            this.product.image = downloadURL
-                        });
-                }
-            );
+                );
+            }
         },
         addNew() {
             this.product.name = null;
             this.product.description = null;
             this.product.price = null;
             this.product.tags = [];
-            this.product.image = null;
+            this.product.images = [];
             this.modal = "new";
             this.$bvModal.show("modal-addnew");
         },
