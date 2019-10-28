@@ -105,8 +105,9 @@
                                 <b-form-file multiple @change="uploadImage" />
                             </div>
                             <div class="form d-flex">
-                                <div class="p-1" v-for="image in product.images">
+                                <div class="p-1" v-for="(image,index) in product.images">
                                     <img :src="image" width="80px" height="80px" />
+                                    <span class="delete-img" @click="deleteImage(image,index)"><i class="fas fa-times"></i></span>
                                 </div>
                             </div>
                             <div class="form-group float-right mt-4">
@@ -161,6 +162,16 @@ export default {
         };
     },
     methods: {
+        deleteImage(img,index){
+            let image = fb.storage().refFromURL(img)
+
+            this.product.images.splice(index,1)
+            image.delete().then(() => {
+                console.log('image deleted');
+            }).catch((error) =>{
+                console.log('an error occured')
+            })
+        },
         addTag() {
             this.product.tags.push(this.tag);
             this.tag = "";
@@ -254,4 +265,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.img-wrapp{
+    position: relative
+}
+.img-wrapp span.delete-img{
+    position: ablolute;
+    top: -14px;
+    left: -2px;
+}
+.img-wrapp span.delete-img:hover{
+    cursor:pointer;
+}
 </style>
