@@ -26,7 +26,7 @@
                             <span class="user-name">
                                 <strong>Asad</strong>
                             </span>
-                            <span class="user-role">Administrator</span>
+                            <span class="user-role">{{email}}</span>
                             <span class="user-status">
                                 <i class="fa fa-circle"></i>
                                 <span>Online</span>
@@ -60,6 +60,12 @@
                                 <router-link to="/admin/overview">
                                     <i class="fas fa-eye"></i>
                                     <span class="menu-text">Overview</span>
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/admin/profile">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span class="menu-text">Profile</span>
                                 </router-link>
                             </li>
                             <li>
@@ -103,7 +109,13 @@
 import {fb} from "@/firebase.js"
 
 export default {
-    name: "home",
+    name: "admin",
+    data(){
+        return{
+            name: null,
+            email:null,
+        }
+    },
     components: {
         // Hero
     },
@@ -118,6 +130,10 @@ export default {
                 console.log(error)
             })
         }
+    },
+    created(){
+        var user = fb.auth().currentUser;
+        this.email = user.email
     }
 };
 </script>

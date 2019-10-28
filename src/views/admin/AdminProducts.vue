@@ -210,11 +210,13 @@ export default {
             }
         },
         addNew() {
-            this.product.name = null;
-            this.product.description = null;
-            this.product.price = null;
-            this.product.tags = [];
-            this.product.images = [];
+            this.product = {
+                name: null,
+                description: null,
+                price: null,
+                tags: [],
+                images: []
+            }
             this.modal = "new";
             this.$bvModal.show("modal-addnew");
         },
