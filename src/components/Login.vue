@@ -39,35 +39,53 @@
                         <b-tab title="Sign UP">
                             <b-card-text>
                                 <div class="form-group">
-                                    <label for="name">Your name</label>
                                     <input
                                         type="text"
                                         v-model="name"
                                         class="form-control"
-                                        id="name"
                                         placeholder="Your nice name"
                                     />
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email">Email address</label>
                                     <input
                                         type="email"
                                         v-model="email"
                                         class="form-control"
-                                        id="email"
                                         aria-describedby="emailHelp"
                                         placeholder="Enter email"
                                     />
                                 </div>
                                 <div class="form-group">
-                                    <label for="password">Password</label>
                                     <input
                                         type="password"
                                         v-model="password"
                                         class="form-control"
-                                        id="password"
                                         placeholder="Password"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <input
+                                        type="text"
+                                        v-model="address"
+                                        class="form-control"
+                                        placeholder="address"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <input
+                                        type="int"
+                                        v-model="phone"
+                                        class="form-control"
+                                        placeholder="Phone"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <input
+                                        type="text"
+                                        v-model="landmark"
+                                        class="form-control"
+                                        placeholder="Land Mark"
                                     />
                                 </div>
 
@@ -83,7 +101,7 @@
     </div>
 </template>
 <script>
-import { fb } from "../firebase.js"
+import { fb, db } from "../firebase.js";
 
 export default {
     name: "Login",
@@ -91,28 +109,47 @@ export default {
         return {
             name: null,
             email: null,
-            password: null
+            password: null,
+            address: null,
+            phone: null,
+            landmark: null
         };
     },
     methods: {
         register() {
             fb.auth()
                 .createUserWithEmailAndPassword(this.email, this.password)
-                .then(() => {
-                    this.$router.replace("admin")
+                .then(user => {
+                    // Add a new document in collection "cities"
+                    db.collection("profiles")
+                        .doc(user.user.uid)
+                        .set({
+                            name: this.name,
+                            email: this.email,
+                            address: this.address,
+                            phone: this.phone,
+                            landmark: this.landmark
+                        })
+                        .then(function() {
+                            console.log("Document successfully written!");
+                        })
+                        .catch(function(error) {
+                            console.error("Error writing document: ", error);
+                        });
+                    this.$router.replace("admin");
                 })
                 .catch(function(error) {
                     // Handle Errors here.
-                    var errorCode = error.code
+                    var errorCode = error.code;
                     // [START_EXCLUDE]
                     if (errorCode == "auth/weak-password") {
-                        alert("The password is too weak.")
+                        alert("The password is too weak.");
                     } else if (errorCode == "auth/email-already-in-use") {
-                        alert("Email already registered")
+                        alert("Email already registered");
                     } else {
-                        alert(errorCode)
+                        alert(errorCode);
                     }
-                    console.log(error)
+                    console.log(error);
                     // [END_EXCLUDE]
                 });
         },
@@ -120,19 +157,19 @@ export default {
             fb.auth()
                 .signInWithEmailAndPassword(this.email, this.password)
                 .then(() => {
-                    this.$router.replace("/admin")
+                    this.$router.replace("/admin/profile");
                 })
                 .catch(function(error) {
                     // Handle Errors here.
-                    var errorCode = error.code
+                    var errorCode = error.code;
                     if (errorCode === "auth/wrong-password") {
-                        alert("Wrong password please try again")
+                        alert("Wrong password please try again");
                     } else if (errorCode == "auth/user-disabled") {
-                        alert("Please contact in office for assistance")
+                        alert("Please contact in office for assistance");
                     } else if (errorCode == "auth/user-not-found") {
-                        alert("User not found please register")
+                        alert("User not found please register");
                     } else if (errorCode == "auth/wrong-password") {
-                        alert("Wrong password please try again")
+                        alert("Wrong password please try again");
                     }
                 });
         }

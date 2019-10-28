@@ -106,8 +106,41 @@
     </b-container>
 </template>
 <script>
+import {fb, db} from '@/firebase.js'
+
 export default {
-    name: "Profile"
+    name: "profile",
+    data(){
+        return{
+            profile:{
+                name:null,
+                phone:null,
+                address:null,
+                landmark:null,
+            },
+            account:{
+                name:null,
+                email:null,
+                photoUrl:null,
+                emailVerified:null,
+                password:null,
+                confirmPassword:null,
+                uid:null,
+            }
+        }
+    },
+    firestore(){
+        const user = fb.auth().currentUser;
+        return{
+            profile: db.collection('profiles').doc(user.uid)
+        }
+    },
+    methods:{
+        updateProfile(){
+            this.$firestore.profile.update(this.profile)
+        },
+        uploadImage(){},
+    }
 };
 </script>
 <style lang="scss" scoped>
