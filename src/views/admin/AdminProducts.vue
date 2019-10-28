@@ -73,14 +73,14 @@
                                 />
                             </div>
                             <div class="form-group">
-                                <vue-editor v-model="product.description"></vue-editor>
-                                <!-- <b-form-textarea
+                                <!-- <vue-editor v-model="product.description"></vue-editor> -->
+                                <b-form-textarea
                                     id="textarea"
                                     v-model="product.description"
                                     placeholder="Product Description"
                                     rows="3"
                                     max-rows="6"
-                                ></b-form-textarea> -->
+                                ></b-form-textarea>
                             </div>
                             <div class="form-group">
                                 <input
@@ -101,7 +101,7 @@
                             </div>
                             <div>
                                 <p>Product Image</p>
-                                <b-form-file multiple @change="uploadImage()" />
+                                <b-form-file multiple @change="uploadImage" />
                             </div>
                             <div class="form-group float-right mt-4">
                                 <b-button
@@ -126,12 +126,12 @@
 </template>
 
 <script>
-import { db } from "@/firebase.js";
-import { VueEditor } from "vue2-editor"
+import { fb, db } from "@/firebase.js";
+import { VueEditor } from "vue2-editor";
 
 export default {
     name: "AdminProducts",
-    components:{
+    components: {
         VueEditor
     },
     data() {
@@ -145,7 +145,7 @@ export default {
                 image: null
             },
             modal: null,
-            tag:null,
+            tag: null
         };
     },
     firestore() {
@@ -155,16 +155,47 @@ export default {
         };
     },
     methods: {
-        addTag(){
-            this.product.tags.push(this.tag)
-            this.tag = ""
+        addTag() {
+            this.product.tags.push(this.tag);
+            this.tag = "";
         },
-        uploadImage() {},
+        uploadImage(e) {
+            let file = e.target.files[0];
+            var storageRef = fb.storage().ref("productImages/" + file.name);
+            let uploadTask = storageRef.put(file);
+
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    var progress =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log("Upload is " + progress + "% done");
+                    switch (snapshot.state) {
+                        
+                    }
+                },
+                (error) => {
+                    // Handle unsuccessful uploads
+                },
+                () => {
+                    // Handle successful uploads on complete
+                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                    uploadTask.snapshot.ref
+                        .getDownloadURL()
+                        .then((downloadURL) => {
+                            // console.log("File available at", downloadURL);
+                            this.product.image = downloadURL
+                        });
+                }
+            );
+        },
         addNew() {
             this.product.name = null;
             this.product.description = null;
             this.product.price = null;
-            this.product.tag = null;
+            this.product.tags = [];
             this.product.image = null;
             this.modal = "new";
             this.$bvModal.show("modal-addnew");
@@ -172,7 +203,7 @@ export default {
         watcher() {},
         updateProduct() {
             this.$bvModal.hide("modal-addnew");
-            this.$firestore.products.doc(this.product.id).update(this.product)
+            this.$firestore.products.doc(this.product.id).update(this.product);
             Toast.fire({
                 type: "success",
                 title: "Update success"
