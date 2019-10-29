@@ -1,19 +1,33 @@
 <template>
-    <b-container fluid>
-        <div class="row">
-        <div v-for="item in products">
-            <div class="card m-1" style="width: 150px">
-                <img src="/img/svg/orders.svg" class="card-img" />
-                <div class="card-body">
-                    <h4 class="card-title text-center">{{item.name}}</h4>
-                    <h6 class="text-center">{{item.price}}</h6>
-                    <p class="card-text text-center" v-html="item.description"/>
+    <div>
+        <Navbar />
+
+        <b-container fluid>
+            <div class="row">
+                <div v-for="item in products">
+                    <div class="card m-1" style="width: 150px">
+                        <div v-for="(image, index) in items.images" />
+                        <img src="/img/svg/orders.svg" class="card-img" />
+                        <div class="card-body">
+                            <h4 class="text-center">{{item.name}}</h4>
+
+                            <h6 class="text-center">
+                                <i class="fas fa-rupee-sign"></i>
+                                - {{item.price}}
+                            </h6>
+                            <!-- <p class="card-text text-center" v-html="item.description" /> -->
+                            <Cart>
+                                :product-image="getImage(item.images)"
+                                :name="item.name"
+                                :price="item.price"
+                                :product-id="item.id"
+                            </Cart>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
 
-        <!-- </b-container>
+            <!-- </b-container>
             <div v-for="item in products">
                 <div class="card-img-top p-2" style="width: 18rem;">
                     <carousel :perPage="1">
@@ -27,13 +41,15 @@
                         <a href="#" class="btn btn-primary">Add to cart</a>
                     </div>
                 </div>
-        </div>-->
-    </b-container>
+            </div>-->
+        </b-container>
+    </div>
 </template>
 <script>
 import { db } from "../firebase.js";
 export default {
     name: "products",
+    components: {},
     data() {
         return {
             products: []
@@ -45,7 +61,11 @@ export default {
             products: db.collection("products")
         };
     },
-    methods: {}
+    methods: {
+        getImage(images){
+            return images[0]
+        }
+    }
 };
 </script>
 <style lang="scss" scoped>
@@ -60,5 +80,8 @@ export default {
         -webkit-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
         -moz-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
         box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
+    }
+    .card-body {
+        padding: 01px;
     }
 </style>

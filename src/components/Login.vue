@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-modal id="modal-center" centered title="J&M Shopping Center" hide-footer>
+        <Navbar />
             <div>
                 <b-card no-body>
                     <b-tabs pills card fill>
@@ -97,7 +97,7 @@
                     </b-tabs>
                 </b-card>
             </div>
-        </b-modal>
+        
     </div>
 </template>
 <script>

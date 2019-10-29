@@ -23,7 +23,8 @@
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
                     <b-nav-item>
-                        <b-button v-b-modal.modal-center>Lets Start</b-button>
+                        <router-link to="/login">Login</router-link>
+                        <!-- <b-button v-b-modal.modal-center>Lets Start</b-button> -->
                     </b-nav-item>
                 </b-navbar-nav>
             </b-collapse>

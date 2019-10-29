@@ -35,6 +35,8 @@ const Toast = Swal.mixin({
 
 window.Toast = Toast
 Vue.component('Navbar', require('./components/Navbar.vue').default)
+Vue.component('Cart', require('./components/Cart.vue').default)
+Vue.component('Products',require('./views/Products.vue').default)
 
 let app = "";
 
