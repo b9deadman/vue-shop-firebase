@@ -10,6 +10,8 @@ import './assets/app.scss'
 import {fb} from "./firebase.js"
 import VueFirestore from 'vue-firestore'
 import Swal from 'sweetalert2'
+import VueCarousel from 'vue-carousel';
+
 
 
 Vue.use(VueFirestore, {
@@ -17,6 +19,7 @@ Vue.use(VueFirestore, {
     enumerable: true  //  whether it is enumerable or not. Default is true.
 })
 
+Vue.use(VueCarousel);
 Vue.use(VueFirestore)
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false;
