@@ -33,20 +33,11 @@
             </b-collapse>
         </b-navbar>
         <div>
-            <b-modal id="cart-modal" centered title="J&M Cart" hide-footer>
-                <div>
-                    <ul>
-                        <li v-for="item in this.$store.state.cart">
-                            {{item.productName}}
-                        </li>
-                    </ul>
-                </div>
-                <div class="float-right">
-                <b-button variant="info" class="m-1">Continue Shopping</b-button>
-                <b-button variant="warning" class="m-1">Check Out</b-button>
-                </div>
+            <b-modal id="cart-modal" title="J&M Cart" hide-footer>
+                <MiniCart />
             </b-modal>
         </div>
+        
     </div>
 </template>
 <script>

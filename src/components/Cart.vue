@@ -19,7 +19,8 @@ export default {
             item: {
                 productName: this.name,
                 productPrice: this.price,
-                product_id: this.productId
+                product_id: this.productId,
+                productQuantity: 1,
             }
         };
     },
