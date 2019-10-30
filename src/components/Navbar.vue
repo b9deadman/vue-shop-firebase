@@ -23,12 +23,30 @@
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
                     <b-nav-item>
+                        <a href="#" v-b-modal.cart-modal>
+                            <i class="fas fa-shopping-cart mr-3"></i>
+                        </a>
                         <router-link to="/login">Login</router-link>
                         <!-- <b-button v-b-modal.modal-center>Lets Start</b-button> -->
                     </b-nav-item>
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
+        <div>
+            <b-modal id="cart-modal" centered title="J&M Cart" hide-footer>
+                <div>
+                    <ul>
+                        <li v-for="item in this.$store.state.cart">
+                            {{item.productName}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="float-right">
+                <b-button variant="info" class="m-1">Continue Shopping</b-button>
+                <b-button variant="warning" class="m-1">Check Out</b-button>
+                </div>
+            </b-modal>
+        </div>
     </div>
 </template>
 <script>

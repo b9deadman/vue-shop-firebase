@@ -36,13 +36,13 @@
                                 class="mt-2"
                             ></b-form-input>
                         </b-form-group>
-                        <b-from-group>
+                        <b-form-group>
                             <b-button
                                 variant="success"
                                 class="float-right mt-2 mb-2"
                                 @click="updateProfile"
                             >Save</b-button>
-                        </b-from-group>
+                        </b-form-group>
                     </b-card-text>
                 </b-tab>
                 <b-tab title="Account">
@@ -79,7 +79,7 @@
                             <b-form-group>
                                 <b-form-file></b-form-file>
                             </b-form-group>
-                            <b-from-group>
+                            <b-form-group>
                                 <b-button
                                     variant="success"
                                     class="float-right mt-2 mb-2 ml-2"
@@ -90,7 +90,7 @@
                                     class="float-right mt-2 mb-2 ml-2"
                                     @click="resetPassword"
                                 >Reset Password</b-button>
-                            </b-from-group>
+                            </b-form-group>
                         </b-card-text>
                     </b-card-text>
                 </b-tab>
@@ -144,9 +144,12 @@ export default {
         },
         updateProfile() {
             this.$firestore.profile.update(this.profile);
+            
         },
-        uploadImage() {}
-    }
+        uploadImage() {},
+        updateAccount(){},
+    },
+    
 };
 </script>
 <style lang="scss" scoped>

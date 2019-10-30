@@ -11,6 +11,7 @@ import {fb} from "./firebase.js"
 import VueFirestore from 'vue-firestore'
 import Swal from 'sweetalert2'
 import VueCarousel from 'vue-carousel';
+import store from "./store.js"
 
 
 
@@ -26,12 +27,15 @@ Vue.config.productionTip = false;
 window.$ = window.jQuery = jQuery
 window.Swal = Swal
 
+
 const Toast = Swal.mixin({
 	toast: true,
 	position: 'top-end',
 	showConfirmButton: false,
 	timer: 3000
   })
+
+
 
 window.Toast = Toast
 Vue.component('Navbar', require('./components/Navbar.vue').default)
@@ -44,6 +48,7 @@ fb.auth().onAuthStateChanged(function () {
 	if (!app) {
 		new Vue({
 			router,
+			store,
 			render: h => h(App)
 		}).$mount("#app");
 

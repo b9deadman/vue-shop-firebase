@@ -1,12 +1,12 @@
 <template>
     <div class="cart">
-        <a href="#">
+        <a href="#" @click="addtoCart">
             <i class="fas fa-cart-plus"></i>
         </a>
     </div>
 </template>
 <script>
-import { stringify } from "querystring";
+
 export default {
     name: "cart",
     props: {
@@ -14,14 +14,20 @@ export default {
         price: String,
         productId: String
     },
-    data(){
-        return{
-            
-            productName: this.name,
-            productPrice: this.price,
-            product_id: this.id
-        }
+    data() {
+        return {
+            item: {
+                productName: this.name,
+                productPrice: this.price,
+                product_id: this.productId
+            }
+        };
     },
+    methods:{
+    addtoCart() {
+        this.$store.commit("addtoCart",this.item);
+    }
+    }
 };
 </script>
 <style lang="scss" scoped>
