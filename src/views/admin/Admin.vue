@@ -1,5 +1,5 @@
 <template>
-    <div class="admin">
+    <b-container fluid>
         <div class="page-wrapper default-theme sidebar-bg bg1 toggled">
             <a href="#" id="show-sidebar" class="btn btn-sm btn-dark" @click="closeMenu">
                 <i class="fas fa-bars"></i>
@@ -100,7 +100,7 @@
             </main>
             <!-- sidebar-content" -->
         </div>
-    </div>
+    </b-container>
 </template>
 
 <script>

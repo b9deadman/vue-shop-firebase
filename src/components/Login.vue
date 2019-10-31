@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <b-container fluid>
         <Navbar />
         <div>
             <b-card no-body>
@@ -97,7 +97,7 @@
                 </b-tabs>
             </b-card>
         </div>
-    </div>
+    </b-container>
 </template>
 <script>
 import { fb, db } from "../firebase.js";

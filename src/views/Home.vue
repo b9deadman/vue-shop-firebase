@@ -3,7 +3,7 @@
         <Navbar />
         <Hero />
         <Products />
-        <Login />
+
     </div>
 </template>
 
@@ -18,7 +18,6 @@ export default {
     components: {
         Hero,
         Products,
-        Login,
     }
 };
 </script>

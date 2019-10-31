@@ -2,42 +2,41 @@
     <div>
         <Navbar />
         <b-container fluid>
-            <div class="row">
-                <div v-for="product in products">
-                    <div class="card m-1" style="width: 150px">
-                        <!-- <div v-for="(image, index) in items.images" /> -->
-                        <img src="/img/svg/orders.svg" class="card-img" />
-                        <div class="card-body">
-                            <h4 class="text-center">{{product.name}}</h4>
+            <b-jumbotron>
+                <div class="row">
+                    <div v-for="product in products">
+                        <div class="card m-1" style="width: 250px">
+                            <!-- <div v-for="(image, index) in items.images" /> -->
+                            <img src="/img/svg/orders.svg" class="card-img" />
+                            <div class="card-body">
+                                <h4 class="text-center">{{product.name}}</h4>
 
-                            <h6 class="text-center">
-                                <i class="fas fa-rupee-sign"></i>
-                                - {{product.price}}
-                            </h6>
-                            <!-- <p class="card-text text-center" v-html="item.description" /> -->
-                            <Cart
-                                :name="product.name"
-                                :price="product.price"
-                                :product-id="product.id">
-                            </Cart>
+                                <h6 class="text-center">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    - {{product.price}}
+                                </h6>
+                                <!-- <p class="card-text text-center" v-html="item.description" /> -->
+                                <Cart
+                                    :name="product.name"
+                                    :price="product.price"
+                                    :product-id="product.id"
+                                ></Cart>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </b-jumbotron>
         </b-container>
     </div>
 </template>
 <script>
 import { db } from "../firebase.js";
 
-
 export default {
     name: "products",
-    
+
     data() {
-        return {
-            
-        };
+        return {};
     },
     firestore() {
         return {
@@ -46,8 +45,8 @@ export default {
         };
     },
     methods: {
-        getImage(images){
-            return images[0]
+        getImage(images) {
+            return images[0];
         }
     }
 };

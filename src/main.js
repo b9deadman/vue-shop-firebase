@@ -43,6 +43,7 @@ Vue.component('Cart', require('./components/Cart.vue').default)
 Vue.component('Products',require('./views/Products.vue').default)
 Vue.component('MiniCart', require('./components/MiniCart.vue').default)
 
+
 let app = "";
 
 fb.auth().onAuthStateChanged(function () {
